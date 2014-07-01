@@ -20,34 +20,14 @@ DUPLICATIONS_FILE = 'data/duplications_data.csv'
 RUBBISH_FILE = 'data/rubbish_data.csv'
 EMPTY_ROWS_FILE = 'data/removed_rows.csv'
 
+include Sweeper
+
 # Setup logger
 @logger = Logger.new(STDOUT)
 @logger.level = Logger::INFO
 @logger.formatter = proc do |severity, datetime, progname, msg|
   "Sweeper (#{datetime}): #{msg}\n"
 end
-
-
-def write_csv_file(file, data)
-  CSV.open(file, 'wb') do |csv|
-    csv << @header
-    data.each { |record| csv << record.to_csv }
-  end
-end
-
-def sweep(message, file)
-  raise ArgumentError, 'Block must be provided!' unless block_given?
-  @logger.info message
-  invalid_data = yield
-
-  if invalid_data.empty?
-    @logger.info 'Nothing found.'
-  else
-    @logger.info "#{invalid_data.size} #{invalid_data.size == 1 ? 'record' : 'records'} found!"
-    write_csv_file(file, invalid_data)
-  end
-end
-
 
 if $0 == __FILE__
 
@@ -56,20 +36,20 @@ if $0 == __FILE__
   @logger.info "#{input_data.size} lines read."
   @header = input_data.shift
 
-  input_data.map! { |row| Sweeper::Record.create_from_csv(row) }
+  input_data.map! { |row| Record.create_from_csv(row) }
 
   # Removing empty rows
   sweep 'Looking for empty rows', EMPTY_ROWS_FILE do
-    Sweeper::EmptyFilter.new(input_data).filter!
+    EmptyFilter.new(input_data).filter!
   end
 
   # Remove rubbish/test data
   sweep 'Looking for test/rubbish data', RUBBISH_FILE do
-    Sweeper::RubbishFilter.new(input_data).filter!
+    RubbishFilter.new(input_data).filter!
   end
 
   # Remove duplicates
   sweep 'Remove duplicating rows', DUPLICATIONS_FILE do
-    Sweeper::DuplicationsFilter.new(input_data).filter!
+    DuplicationsFilter.new(input_data).filter!
   end
 end
