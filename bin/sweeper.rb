@@ -56,12 +56,12 @@ if $0 == __FILE__
 
   # Removing empty rows
   sweep 'Looking for empty rows', EMPTY_ROWS_FILE do
-    Sweeper::Empty.new(input_data).remove!
+    Sweeper::EmptyFilter.new(input_data).filter!
   end
 
   # Remove rubbish/test data
   sweep 'Looking for test/rubbish data', RUBBISH_FILE do
-    Sweeper::Rubbish.new(input_data).remove!
+    Sweeper::RubbishFilter.new(input_data).filter!
   end
 
 end

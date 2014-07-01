@@ -1,20 +1,5 @@
 module Sweeper
-  class Empty
-    attr_reader :records, :empty
-
-    def initialize(records)
-      @records = records
-      @empty = []
-    end
-
-    def remove!
-      @records.reject! do |record|
-        empty << record if reject?(record)
-      end
-
-      @empty
-    end
-
+  class EmptyFilter < Filter
     private
 
     # TODO: change +nil?+ to +blank?+

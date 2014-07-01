@@ -1,20 +1,5 @@
 module Sweeper
-  class Rubbish
-    attr_reader :records, :rubbish
-
-    def initialize(records)
-      @records = records
-      @rubbish = []
-    end
-
-    def remove!
-      @records.reject! do |record|
-        rubbish << record if reject?(record)
-      end
-
-      @rubbish
-    end
-
+  class RubbishFilter < Filter
     private
 
     def reject?(record)
