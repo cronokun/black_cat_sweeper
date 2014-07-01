@@ -32,6 +32,14 @@ module Sweeper
     def test_data?
       to_csv.any? { |value| value.to_s.downcase.include?('test') }
     end
+
+    def same_title_and_email?
+      title.to_s.downcase == email.to_s.downcase
+    end
+
+    def same_title_and_url?
+      title.to_s.downcase == friendly_url.to_s.downcase
+    end
   end
 
 end
