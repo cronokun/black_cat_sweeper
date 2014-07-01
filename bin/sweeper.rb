@@ -52,4 +52,7 @@ if $0 == __FILE__
   sweep 'Remove duplicating rows', DUPLICATIONS_FILE do
     DuplicationsFilter.new(input_data).filter!
   end
+
+  @logger.info "#{input_data.size} records remain."
+  write_csv_file(VALID_FILE, input_data)
 end
