@@ -18,9 +18,9 @@ module Sweeper
     invalid_data = yield
 
     if invalid_data.empty?
-      @logger.info 'Nothing found.'
+      @logger.info "Nothing was found.\n"
     else
-      @logger.info "#{invalid_data.size} #{invalid_data.size == 1 ? 'record' : 'records'} found!"
+      @logger.info "#{invalid_data.size} #{invalid_data.size == 1 ? 'record' : 'records'} was found!\n"
       write_csv_file(file, invalid_data)
     end
   end

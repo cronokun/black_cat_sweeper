@@ -33,7 +33,7 @@ if $0 == __FILE__
 
   # Read data from CSV file
   input_data = CSV.read(INPUT_FILE)
-  @logger.info "#{input_data.size} lines read."
+  @logger.info "#{input_data.size} lines read.\n"
   @header = input_data.shift
 
   input_data.map! { |row| Record.create_from_csv(row) }
