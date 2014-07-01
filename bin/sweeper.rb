@@ -23,6 +23,10 @@ EMPTY_ROWS_FILE = 'data/removed_rows.csv'
 # Setup logger
 @logger = Logger.new(STDOUT)
 @logger.level = Logger::INFO
+@logger.formatter = proc do |severity, datetime, progname, msg|
+  "Sweeper (#{datetime}): #{msg}\n"
+end
+
 
 def write_csv_file(file, data)
   CSV.open(file, 'wb') do |csv|
