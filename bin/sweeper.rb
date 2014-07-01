@@ -64,4 +64,8 @@ if $0 == __FILE__
     Sweeper::RubbishFilter.new(input_data).filter!
   end
 
+  # Remove duplicates
+  sweep 'Remove duplicating rows', DUPLICATIONS_FILE do
+    Sweeper::DuplicationsFilter.new(input_data).filter!
+  end
 end
