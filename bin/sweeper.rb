@@ -20,13 +20,20 @@ DUPLICATIONS_FILE = 'data/duplications_data.csv'
 RUBBISH_FILE = 'data/rubbish_data.csv'
 REMOVED_ROWS_FILE = 'data/removed_rows.csv'
 
+def write_csv_file(file, data)
+  CSV.open(file, 'wb') do |csv|
+    csv << HEADER
+    data.each { |record| csv << record.to_csv }
+  end
+end
+
 logger = Logger.new(STDOUT)
 logger.level = Logger::INFO
 
 # Read data from CSV file
 input_data = CSV.read(INPUT_FILE)
-header = input_data.shift
 logger.info "#{input_data.size} lines read."
+HEADER = input_data.shift
 
 input_data.map! { |row| Sweeper::Record.create_from_csv(row) }
 
@@ -34,10 +41,10 @@ input_data.map! { |row| Sweeper::Record.create_from_csv(row) }
 logger.info "Looking for empty rows..."
 empty = Sweeper::Empty.new(input_data).remove!
 logger.info "#{empty.size} records found!"
+write_csv_file(REMOVED_ROWS_FILE, empty)
 
-CSV.open(REMOVED_ROWS_FILE, 'wb') do |csv|
-  csv << header
-  empty.each { |record| csv << record.to_csv }
-end
-
-# duplications = Sweeper::Duplications.new(input_data).remove!
+# Remove rubbish/test data
+logger.info "\nLooking for rubbish data..."
+rubbish = Sweeper::Rubbish.new(input_data).remove!
+logger.info "#{rubbish.size} records found!"
+write_csv_file(RUBBISH_FILE, rubbish)

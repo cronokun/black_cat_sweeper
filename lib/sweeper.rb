@@ -1,6 +1,6 @@
 require 'sweeper/record'
 require 'sweeper/empty'
-# require 'sweeper/duplications'
+require 'sweeper/rubbish'
 
 module Sweeper
 end

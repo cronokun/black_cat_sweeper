@@ -24,6 +24,14 @@ module Sweeper
     def combined_address
       [address_1, address_2, address_3]
     end
+
+    # FIXME:
+    #
+    # * false positive on Countesthorpe
+    #
+    def test_data?
+      to_csv.any? { |value| value.to_s.downcase.include?('test') }
+    end
   end
 
 end
