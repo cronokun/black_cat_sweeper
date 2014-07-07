@@ -4,7 +4,17 @@ module Sweeper
 
 
     # Valid words that includes "test"
-    EXCEPTIONS = %w[countesthorpe].freeze
+    EXCEPTIONS = [
+      'countesthorpe',
+      '1st safetest electrical',
+      '1st electrical testing',
+      '2000 test equipment',
+      '2000test.co.uk',
+      '3c test ltd',
+      '3ctest.co.uk',
+      'york test',
+      'yorktest',
+    ].freeze
 
     attr_reader *ATTRIBUTE_NAMES
 

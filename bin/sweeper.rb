@@ -5,7 +5,7 @@ require 'sweeper'
 require 'csv'
 require 'logger'
 
-# TODO:
+# Workflow:
 #
 # 1. Get data from input file (it's CSV file for now)
 # 2. Remove duplications
@@ -17,8 +17,8 @@ require 'logger'
 INPUT_FILE = 'data/Revised Listing_25k.csv' # 'data/input_data.csv'
 VALID_FILE = 'data/valid_data.csv'
 DUPLICATIONS_FILE = 'data/duplications_data.csv'
-RUBBISH_FILE = 'data/rubbish_data.csv'
-EMPTY_ROWS_FILE = 'data/removed_rows.csv'
+RUBBISH_FILE = 'data/test_data.csv'
+EMPTY_ROWS_FILE = 'data/empty_rows.csv'
 
 include Sweeper
 
