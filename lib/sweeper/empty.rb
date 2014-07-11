@@ -3,16 +3,10 @@ module Sweeper
     private
 
     def reject?(record)
-      puts record.inspect if only_title_and_phone?(record)
-        only_title_and_phone?(record) ||
-        (empty_address?(record) &&
-          record.email.nil? &&
-          record.url.nil? &&
-          record.phone.nil?)
-    end
-
-    def empty_address?(record)
-      record.combined_address.join.strip.empty?
+      only_title_and_phone?(record) ||
+        without_address_email_url_phone?(record) ||
+        without_title_url_address?(record) ||
+        title_is_number_and_empty_url?(record)
     end
 
     def only_title_and_phone?(record)
@@ -20,7 +14,25 @@ module Sweeper
         !record.phone.nil? &&
         record.url.nil? &&
         record.email.nil? &&
-        empty_address?(record)
+        record.empty_address?
+    end
+
+    def without_address_email_url_phone?(record)
+      record.empty_address? &&
+        record.email.nil? &&
+        record.url.nil? &&
+        record.phone.nil?
+    end
+
+    def without_title_url_address?(record)
+      record.title.nil? &&
+        record.url.nil? &&
+        record.empty_address?
+    end
+
+    def title_is_number_and_empty_url?(record)
+      /^\d+$/ =~ record.title &&
+        record.url.nil?
     end
   end
 end

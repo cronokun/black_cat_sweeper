@@ -14,10 +14,11 @@ require 'logger'
 #
 # All invalid data goes to separate CSV files
 
-INPUT_FILE = 'data/Revised Listing_25k.csv' # 'data/input_data.csv'
+INPUT_FILE = 'data/Revised Listing_25k.csv'
 VALID_FILE = 'data/valid_data.csv'
 DUPLICATIONS_FILE = 'data/duplications_data.csv'
-RUBBISH_FILE = 'data/test_data.csv'
+RUBBISH_FILE = 'data/rubbish_data.csv'
+SUSPICIOUS_FILE = 'data/suspicious_data.csv'
 EMPTY_ROWS_FILE = 'data/empty_rows.csv'
 
 include Sweeper
@@ -40,17 +41,30 @@ if $0 == __FILE__
 
   # Removing empty rows
   sweep 'Looking for empty rows', EMPTY_ROWS_FILE do
-    EmptyFilter.new(input_data).filter!
+    result = EmptyFilter.new(input_data).filter!
+    input_data = result[:valid_records]
+    result
   end
 
-  # Remove rubbish/test data
-  sweep 'Looking for test/rubbish data', RUBBISH_FILE do
-    RubbishFilter.new(input_data).filter!
+  # Remove rubbish data
+  sweep 'Looking for rubbish data', RUBBISH_FILE do
+    result = RubbishFilter.new(input_data).filter!
+    input_data = result[:valid_records]
+    result
   end
 
   # Remove duplicates
-  sweep 'Remove duplicating rows', DUPLICATIONS_FILE do
-    DuplicationsFilter.new(input_data).filter!
+  sweep 'Looking for duplicating rows', DUPLICATIONS_FILE do
+    result = DuplicationsFilter.new(input_data).filter!
+    input_data = result[:valid_records]
+    result
+  end
+
+  # Remove suspicious data
+  sweep 'Looking for suspicious data', SUSPICIOUS_FILE do
+    result = SuspiciousFilter.new(input_data).filter!
+    input_data = result[:valid_records]
+    result
   end
 
   @logger.info "#{input_data.size} records remain."
